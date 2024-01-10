@@ -29,3 +29,8 @@ vim.opt.colorcolumn = "100"
 vim.g.mapleader = " "
 
 vim.opt.clipboard:append("unnamedplus")
+
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
