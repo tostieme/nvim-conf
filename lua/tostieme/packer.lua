@@ -14,13 +14,13 @@ return require('packer').startup(function(use)
     }
 
     -- Colorscheme
-    -- use ({
-    -- 	"tiagovla/tokyodark.nvim",
-    -- 	as = "theme",
-    -- 	config = function()
-    -- 		vim.cmd('colorscheme tokyodark')
-    -- 	end
-    -- })
+    use({
+        "tiagovla/tokyodark.nvim",
+        as = "theme",
+        config = function()
+            vim.cmd('colorscheme tokyodark')
+        end
+    })
     -- use ({
     -- 	"craftzdog/solarized-osaka.nvim",
     -- 	as = "solarized-osaka",
@@ -94,5 +94,15 @@ return require('packer').startup(function(use)
         config = function()
             require("oil").setup()
         end,
+    })
+
+    use({
+        "kylechui/nvim-surround",
+        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
     })
 end)
