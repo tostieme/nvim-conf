@@ -78,8 +78,9 @@ return require('packer').startup(function(use)
     -- Statusbar at bottom
     use('itchyny/lightline.vim')
 
-    -- Helm-ls
-    use('towolf/vim-helm')
+    -- Go.nvim
+    use('ray-x/go.nvim')
+    use('ray-x/guihua.lua')
 
     -- Nvim Tree
     use {

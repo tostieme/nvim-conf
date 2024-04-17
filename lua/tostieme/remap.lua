@@ -56,3 +56,31 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- go to definition
 vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+
+
+-- Define the autocmd using vim.api.nvim_create_autocmd
+vim.api.nvim_create_autocmd("BufNewFile",{
+  desc = "Write Bash header when opening new .sh file",
+  group = aug,
+  pattern = "*.sh",
+  callback = function(params)
+    local header_lines = {
+      '#!/bin/bash',
+    }
+    vim.api.nvim_buf_set_lines(0,0,0,false, header_lines)
+  end,
+})
+
+--- Run go.fmt and go.import when saving
+local format_sync_grp = vim.api.nvim_create_augroup("goimports",{})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function ()
+    require('go.format').goimports()
+  end,
+  group = format_sync_grp
+})
+
+-- Run :GoIfErr in normal and insert mode
+vim.keymap.set({"n", "i"}, "<C-s>","<cmd>:GoIfErr<CR>")
+
