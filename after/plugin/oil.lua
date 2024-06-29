@@ -1,6 +1,4 @@
-local oil = require("oil")
-
-oil.setup({
+require("oil").setup({
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
   -- Set to false if you still want to use netrw.
   default_file_explorer = true,
@@ -69,7 +67,7 @@ oil.setup({
     ["-"] = "actions.parent",
     ["_"] = "actions.open_cwd",
     ["`"] = "actions.cd",
-    ["~"] = { "actions.cd", opts = { scope = "tab" } },
+    ["~"] = "actions.tcd",
     ["gs"] = "actions.change_sort",
     ["gx"] = "actions.open_external",
     ["g."] = "actions.toggle_hidden",
