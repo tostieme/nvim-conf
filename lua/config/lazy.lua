@@ -80,7 +80,7 @@ return require('lazy').setup({
         version = 'v0.*',
 
         opts = {
-            keymap = { 
+            keymap = {
                 preset = 'default',
                 ['<Tab>'] = { 'accept', 'fallback' },
             },
@@ -145,5 +145,9 @@ return require('lazy').setup({
         opts = {
             ensure_installed = { "lua_ls", "rust_analyzer" },
         },
+    },
+    {
+        "nvim-tree/nvim-web-devicons",
+        config = true,
     }
 })
