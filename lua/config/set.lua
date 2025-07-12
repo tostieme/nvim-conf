@@ -34,3 +34,26 @@ vim.opt.clipboard:append("unnamedplus")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.opt.foldcolumn = '1' -- '0' is not bad
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+
+vim.filetype.add({
+  extension = {
+    gotmpl = 'gotmpl',
+  },
+  pattern = {
+    [".*/templates/.*%.tpl"] = "helm",
+    [".*/templates/.*%.ya?ml"] = "helm",
+    ["helmfile.*%.ya?ml"] = "helm",
+  },
+})
+
+-- if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
+--       vim.diagnostic.disable(bufnr)
+--       vim.defer_fn(function()
+--         vim.diagnostic.reset(nil, bufnr)
+--       end, 1000)
+--    end
+
