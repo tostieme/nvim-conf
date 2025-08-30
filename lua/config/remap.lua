@@ -1,6 +1,9 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 
+-- Normal and Insert mode mappings
+local opts = { noremap = true, silent = true }
+
 -- NvimTreeToogle
 vim.keymap.set("n", "<leader>e", "<cmd>:NvimTreeToggle<CR>")
 
@@ -51,10 +54,44 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 -- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>sx", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- go to definition
-vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+vim.keymap.set("n", "gd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
+vim.keymap.set("n", "gr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>")
+vim.keymap.set("n", "gt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>")
+vim.keymap.set("n", "gi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
+vim.keymap.set("n", "gD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>")
+vim.keymap.set("n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>")
+--
+-- Promote preview window to full buffer with cursor position preserved
+vim.keymap.set('n', '<leader>pp', function()
+    -- Look for preview windows
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local config = vim.api.nvim_win_get_config(win)
+        -- Check if it's a floating window (preview) or has preview option set
+        if config.relative ~= '' or vim.wo[win].previewwindow then
+            local preview_buf = vim.api.nvim_win_get_buf(win)
+
+            -- Get cursor position from preview window
+            local cursor_pos = vim.api.nvim_win_get_cursor(win)
+
+            -- Close the preview window
+            vim.api.nvim_win_close(win, false)
+
+            -- Open the preview buffer in the current window
+            vim.api.nvim_set_current_buf(preview_buf)
+
+            -- Restore cursor position (using current window, not the closed one)
+            vim.api.nvim_win_set_cursor(0, cursor_pos)
+            break
+        end
+    end
+end, { desc = "Promote preview window to current buffer with cursor position" })
+
+
+-- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+-- vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
 
 
@@ -81,5 +118,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     group = format_sync_grp
 })
 
--- Run :GoIfErr in normal and insert mode
-vim.keymap.set({ "n", "i" }, "<C-s>", "<cmd>:GoIfErr<CR>")
+-- Run :AddGoTags
+vim.keymap.set("v", "<leader>at", ":AddGoTags<CR>", { desc = "Add Go struct tags", silent = true })
+vim.keymap.set("v", "<leader>rt", ":RemoveGoTags<CR>", { desc = "Remove Go struct tags", silent = true })

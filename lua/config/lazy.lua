@@ -21,6 +21,16 @@ return require('lazy').setup({
 
     { "nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate" },
     {
+        "zgs225/gomodifytags.nvim",
+        cmd = { "GoAddTags", "GoRemoveTags", "GoInstallModifyTagsBin" },
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        config = function()
+            require("gomodifytags").setup() -- Optional: You can add any specific configuration here if needed.
+        end,
+    },
+    {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.5',
         dependencies = { { 'nvim-lua/plenary.nvim' } }
@@ -33,7 +43,6 @@ return require('lazy').setup({
         end
     },
 
-    'mbbill/undotree',
     'tpope/vim-fugitive',
     'theprimeagen/harpoon',
 
@@ -149,5 +158,56 @@ return require('lazy').setup({
     {
         "nvim-tree/nvim-web-devicons",
         config = true,
+    },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {
+            triggers = {
+                { "<leader>", mode = { "n", "v" } },
+            }
+        },
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
+    },
+    {
+        "folke/trouble.nvim",
+        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        cmd = "Trouble",
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>xX",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>xL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>xQ",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+        },
+    },
+    {
+        "rmagatti/goto-preview",
+        dependencies = { "rmagatti/logger.nvim" },
+        event = "BufEnter",
+        config = true, -- necessary as per https://github.com/rmagatti/goto-preview/issues/88
     }
 })
